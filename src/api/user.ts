@@ -32,6 +32,13 @@ export type RefreshTokenResult = {
   };
 };
 
+export type VerTiconCode = {
+  success: boolean;
+  data: {
+    code: number;
+  };
+};
+
 /** 登录 */
 export const getLogin = (data?: object) => {
   return http.request<UserResult>("post", "/login", { data });
@@ -40,4 +47,9 @@ export const getLogin = (data?: object) => {
 /** 刷新`token` */
 export const refreshTokenApi = (data?: object) => {
   return http.request<RefreshTokenResult>("post", "/refresh-token", { data });
+};
+
+/**验证码 */
+export const getVerCode = (data?: object) => {
+  return http.request<VerTiconCode>("get", "/code", { data });
 };

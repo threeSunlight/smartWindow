@@ -61,7 +61,7 @@ panel:
   pureHiddenFooter: 隐藏页脚
   pureMultiTagsCache: 页签持久化
 menus:
-  pureHome: 首页
+  pureHome: 数据监控
   pureLogin: 登录
   pureAbnormal: 异常页面
   pureFourZeroFour: "404"
@@ -79,11 +79,17 @@ status:
   pureNoNotify: 暂无通知
   pureNoTodo: 暂无待办
 login:
-  pureUsername: 账号
-  purePassword: 密码
+  pureUsername: 请输入用户名
+  purePassword: 请输入密码
+  pureVerificationCode: 请输入验证码
   pureLogin: 登录
   pureLoginSuccess: 登录成功
   pureLoginFail: 登录失败
-  pureUsernameReg: 请输入账号
+  pureUsernameReg: 请输入用户名
   purePassWordReg: 请输入密码
+  pureCodeReg: 请输入验证码
   purePassWordRuleReg: 密码格式应为8-18位数字、字母、符号的任意两种组合
+syss:
+  sysAll: 测试管理
+  sysHome: 用户管理
+  sysName: 测试管理

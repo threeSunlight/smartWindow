@@ -3,8 +3,10 @@ import { $t } from "@/plugins/i18n";
 export default {
   path: "/error",
   redirect: "/error/403",
+
   meta: {
     icon: "ri:information-line",
+    showLink: false,
     // showLink: false,
     title: $t("menus.pureAbnormal"),
     rank: 9

@@ -1,7 +1,7 @@
 .wave {
   position: fixed;
   height: 100%;
-  width: 80%;
+  width: 100%;
   left: 0;
   bottom: 0;
   z-index: -1;
@@ -13,34 +13,63 @@
   max-width: 100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-gap: 18rem;
+  grid-gap: 10rem;
   padding: 0 2rem;
 }
 
 .img {
+  display: block;
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
 
-.img img {
-  width: 500px;
+.img p{
+  font-family: PingFangSC-Medium;
+  font-size: 40px;
+  color: #FFFFFF;
+  font-weight: 500;
+}
+.img p span:first-child {
+  display: inline-block;
+  margin-bottom: 24px
 }
 
 .login-box {
   display: flex;
   align-items: center;
   text-align: center;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .login-form {
-  width: 360px;
+  width: 480px;
+  height:550px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 58px 40px 47px 40px
 }
 
+.login-form-title-content {
+  display: block;
+  height: 50px;
+  line-height: 50px;
+  margin-bottom: 40px
+}
 .avatar {
-  width: 350px;
-  height: 80px;
+  width: 60px;
+  height: 50px;
+  vertical-align: middle
+}
+
+.login-form-title {
+  display: inline-block;
+  font-family: FZZYJW--GB1-0;
+  font-size: 32px;
+  color: #3666F4;
+  font-weight: 600;
+  vertical-align: middle;
+  line-height: 50px
 }
 
 .login-form h2 {
@@ -51,6 +80,18 @@
     bold 200% Consolas,
     Monaco,
     monospace;
+}
+
+.loginButton{
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0 0 20px
+
+}
+.botomLogin{
+  width: 400px;
+  height: 40px;
+  margin-top: 40px
 }
 
 @media screen and (max-width: 1180px) {

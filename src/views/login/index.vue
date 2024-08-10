@@ -5,12 +5,12 @@ import { useRouter } from "vue-router";
 import { message } from "@/utils/message";
 import { loginRules } from "./utils/rule";
 import { useNav } from "@/layout/hooks/useNav";
-import type { FormInstance } from "element-plus";
+import { FormInstance, ElMessage } from "element-plus";
 import { $t, transformI18n } from "@/plugins/i18n";
 import { useLayout } from "@/layout/hooks/useLayout";
 import { useUserStoreHook } from "@/store/modules/user";
 import { initRouter, getTopMenu } from "@/router/utils";
-import { bg, avatar, illustration } from "./utils/static";
+import { bg, titlebg } from "./utils/static";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { ref, reactive, toRaw, onMounted, onBeforeUnmount } from "vue";
 import { useTranslationLang } from "@/layout/hooks/useTranslationLang";
@@ -22,6 +22,7 @@ import globalization from "@/assets/svg/globalization.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
 import Check from "@iconify-icons/ep/check";
 import User from "@iconify-icons/ri/user-3-fill";
+import { getVerCode } from "@/api/user";
 
 defineOptions({
   name: "Login"
@@ -40,9 +41,14 @@ const { title, getDropdownItemStyle, getDropdownItemClass } = useNav();
 const { locale, translationCh, translationEn } = useTranslationLang();
 
 const ruleForm = reactive({
-  username: "admin",
-  password: "admin123"
+  username: "",
+  password: "",
+  verificationCode: "",
+  keeplogin: true
 });
+
+/**区分当前是验证码登录还是密码登录 true: 密码登录 false: 验证码登录 */
+const passwordOrCode = ref(true);
 
 const onLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
@@ -50,7 +56,11 @@ const onLogin = async (formEl: FormInstance | undefined) => {
     if (valid) {
       loading.value = true;
       useUserStoreHook()
-        .loginByUsername({ username: ruleForm.username, password: "admin123" })
+        .loginByUsername({
+          username: ruleForm.username,
+          password: ruleForm.password,
+          code: ruleForm.verificationCode
+        })
         .then(res => {
           if (res.success) {
             // 获取后端路由
@@ -75,6 +85,24 @@ function onkeypress({ code }: KeyboardEvent) {
   }
 }
 
+/**获取验证码 */
+const getCode = () => {
+  getVerCode()
+    .then(res => {
+      ElMessage({
+        showClose: true,
+        message: "验证码发送成功,请查看手机",
+        type: "success"
+      });
+    })
+    .catch(err => {
+      ElMessage({
+        showClose: true,
+        message: `${err}`,
+        type: "error"
+      });
+    });
+};
 onMounted(() => {
   window.document.addEventListener("keypress", onkeypress);
 });
@@ -131,14 +159,18 @@ onBeforeUnmount(() => {
     </div>
     <div class="login-container">
       <div class="img">
-        <component :is="toRaw(illustration)" />
+        <p>
+          <span>Welcome !</span>
+          <br />
+          <span>智能电动窗管理平台</span>
+        </p>
       </div>
       <div class="login-box">
         <div class="login-form">
-          <avatar class="avatar" />
-          <Motion>
-            <h2 class="outline-none">{{ title }}</h2>
-          </Motion>
+          <div class="login-form-title-content">
+            <img :src="titlebg" class="avatar" />
+            <span class="login-form-title">智能电动窗</span>
+          </div>
 
           <el-form
             ref="ruleFormRef"
@@ -161,27 +193,75 @@ onBeforeUnmount(() => {
                   v-model="ruleForm.username"
                   clearable
                   :placeholder="t('login.pureUsername')"
-                  :prefix-icon="useRenderIcon(User)"
+                  :prefix-icon="
+                    useRenderIcon(User, {
+                      color: '#3666F4'
+                    })
+                  "
                 />
               </el-form-item>
             </Motion>
+
+            <!-- <Motion  :delay="150"> -->
+            <el-form-item v-if="passwordOrCode" prop="password">
+              <el-input
+                v-model="ruleForm.password"
+                clearable
+                show-password
+                :placeholder="t('login.purePassword')"
+                :prefix-icon="
+                  useRenderIcon(Lock, {
+                    color: '#3666F4'
+                  })
+                "
+              />
+            </el-form-item>
+            <!-- </Motion> -->
+
+            <!-- <Motion  :delay="150"> -->
+            <el-form-item v-if="!passwordOrCode" prop="verificationCode">
+              <el-input
+                v-model="ruleForm.verificationCode"
+                clearable
+                show-password
+                :placeholder="t('login.pureVerificationCode')"
+                :prefix-icon="
+                  useRenderIcon(Lock, {
+                    color: '#3666F4'
+                  })
+                "
+              >
+                <template #suffix>
+                  <el-button link type="primary" @click="getCode"
+                    >获取验证码</el-button
+                  >
+                </template>
+              </el-input>
+            </el-form-item>
+            <!-- </Motion> -->
 
             <Motion :delay="150">
-              <el-form-item prop="password">
-                <el-input
-                  v-model="ruleForm.password"
-                  clearable
-                  show-password
-                  :placeholder="t('login.purePassword')"
-                  :prefix-icon="useRenderIcon(Lock)"
-                />
-              </el-form-item>
+              <div class="loginButton">
+                <el-button link type="primary"
+                  ><el-checkbox
+                    v-model="ruleForm.keeplogin"
+                    size="small"
+                  />保持登录</el-button
+                >
+                <el-button
+                  link
+                  type="primary"
+                  @click="() => (passwordOrCode = !passwordOrCode)"
+                  >{{ !passwordOrCode ? "密码登录" : "验证码登录" }}
+                </el-button>
+              </div>
             </Motion>
 
-            <Motion :delay="250">
+            <Motion :delay="250" class="botomLogin">
               <el-button
                 class="w-full mt-4"
-                size="default"
+                color="#3666F4"
+                size="large"
                 type="primary"
                 :loading="loading"
                 @click="onLogin(ruleFormRef)"
@@ -203,6 +283,16 @@ onBeforeUnmount(() => {
 <style lang="scss" scoped>
 :deep(.el-input-group__append, .el-input-group__prepend) {
   padding: 0;
+}
+:deep(.el-input__wrapper) {
+  box-shadow: 0 0 0 0px var(--el-input-border-color, var(--el-border-color))
+    inset;
+  cursor: default;
+  border-bottom: 1px solid #e4e4e4;
+  height: 50px;
+  .el-input inner {
+    cursor: default !important;
+  }
 }
 
 .translation {

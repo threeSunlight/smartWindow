@@ -61,7 +61,7 @@ panel:
   pureHiddenFooter: Hidden Footer
   pureMultiTagsCache: MultiTags Cache
 menus:
-  pureHome: Home
+  pureHome: DataMonitoring
   pureLogin: Login
   pureAbnormal: Abnormal Page
   pureFourZeroFour: "404"
@@ -81,9 +81,11 @@ status:
 login:
   pureUsername: Username
   purePassword: Password
+  pureVerificationCode: VerificationCode
   pureLogin: Login
   pureLoginSuccess: Login Success
   pureLoginFail: Login Fail
   pureUsernameReg: Please enter username
   purePassWordReg: Please enter password
+  pureCodeReg: Please enter code
   purePassWordRuleReg: The password format should be any combination of 8-18 digits

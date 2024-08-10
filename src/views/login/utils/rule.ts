@@ -21,6 +21,18 @@ const loginRules = reactive(<FormRules>{
       },
       trigger: "blur"
     }
+  ],
+  verificationCode: [
+    {
+      validator: (rule, value, callback) => {
+        if (value === "") {
+          callback(new Error(transformI18n($t("login.pureCodeReg"))));
+        } else {
+          callback();
+        }
+      },
+      trigger: "blur"
+    }
   ]
 });
 
