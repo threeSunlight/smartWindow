@@ -2,36 +2,56 @@
 defineOptions({
   name: "Welcome"
 });
+import LineChart from "./component/LineChart.vue";
+import Doughnut from "./component/Doughnut.vue";
+import MapEcharts from "./component/MapEchart.vue";
+import Histogram from "./component/Histogram.vue";
 </script>
 
 <template>
-  <div>
+  <div class="conterin">
     <!-- 上面的盒子 -->
-    <div class="topBottom">
-      <div class="lineClass">折线图</div>
-      <div class="annularClass">环形图</div>
+    <div class="topBottom conterinBgc">
+      <div class="lineClass">
+        <LineChart />
+      </div>
+      <div class="centerCorder"></div>
+      <div class="annularClass">
+        <Doughnut />
+      </div>
     </div>
     <!-- 下面的盒子 -->
     <div class="contentBottom">
-      <div class="mapClass">地图</div>
-      <div class="barClass">柱状图</div>
+      <div class="mapClass conterinBgc">
+        <MapEcharts />
+      </div>
+      <div class="barClass conterinBgc">
+        <Histogram />
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+.conterinBgc {
+  background-color: #fff;
+}
 .topBottom {
   height: 355px;
-  border: 1px solid red;
   margin-bottom: 8px;
   display: flex;
   .lineClass {
     width: 1094px;
-    border: 1px solid red;
+    // border: 1px solid red;
   }
   .annularClass {
     width: 577px;
-    border: 1px solid red;
+  }
+  .centerCorder {
+    // width: 1px;
+    height: 300px;
+    margin-top: 24px;
+    border: 1px solid #eee;
   }
 }
 .contentBottom {
@@ -39,12 +59,12 @@ defineOptions({
   height: 460px;
   .mapClass {
     width: 934px;
-    border: 1px solid red;
     margin-right: 8px;
   }
   .barClass {
+    text-align: -webkit-center;
+    // text-align: center;
     width: 730px;
-    border: 1px solid red;
   }
 }
 </style>
