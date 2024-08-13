@@ -1,8 +1,10 @@
 <template>
-  <el-config-provider :locale="currentLocale">
-    <router-view />
-    <ReDialog />
-  </el-config-provider>
+  <div class="appClass">
+    <el-config-provider :locale="currentLocale">
+      <router-view />
+      <ReDialog />
+    </el-config-provider>
+  </div>
 </template>
 
 <script lang="ts">
@@ -25,3 +27,9 @@ export default defineComponent({
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.appClass {
+  padding: 10px 10px !important;
+}
+</style>
