@@ -91,3 +91,5 @@ login:
   purePassWordRuleReg: The password format should be any combination of 8-18 digits
 dis:
   distributor: distributor management
+client:
+  clienManagement: client management

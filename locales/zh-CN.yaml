@@ -95,3 +95,5 @@ syss:
   sysName: 测试管理
 dis:
   distributor: 经销商管理
+client:
+  clienManagement: 客户管理
