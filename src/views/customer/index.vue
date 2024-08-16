@@ -12,15 +12,29 @@ import {
 } from "@element-plus/icons-vue";
 import { ref, reactive, nextTick } from "vue";
 import AddOrUpdateClient from "./AddOrUpdateClient.vue";
+import Floor from "./floor.vue";
 import { getDistributorList } from "@/api/distributor";
 /* 顶部搜索 */
 let distriValue = ref("");
 /** 表格数据列表 */
-const tableData = reactive([]);
+const tableData = reactive([
+  {
+    id: 1,
+    name: "你好",
+    dealer: "所属经销商",
+    project: "项目",
+    city: "城市",
+    deviceName: "deviceName"
+  }
+]);
 /**控制新弹框显示 */
 const addDistributorVisible = ref(false);
 /**获取新增ref属性 */
 const addDistributor = ref(null);
+/**获取楼层显示属性 */
+const floorVisible = ref(false);
+/**获取楼层ref属性 */
+const floorRef = ref(null);
 /**多选 */
 const multipleSelection = ref([]);
 /**分页 */
@@ -69,10 +83,16 @@ const handleCurrentChange = (val: number) => {
 };
 
 /** 楼层管理 */
-const handleFloor = (index: any, row: any) => {};
+const handleFloor = (index: any, row: any) => {
+  floorVisible.value = true;
+  nextTick(() => {
+    floorRef.value.init(row);
+  });
+};
 /**关闭弹框 */
 const closeDialog = () => {
   addDistributorVisible.value = false;
+  floorVisible.value = false;
 };
 </script>
 
@@ -139,11 +159,18 @@ const closeDialog = () => {
         <el-table-column prop="deviceName" label="设备数量" />
         <el-table-column label="操作">
           <template #default="scope">
-            <el-button size="small" @click="addOrUpdateDistor(scope.row)">
+            <el-button
+              size="small"
+              type="primary"
+              plain
+              @click="addOrUpdateDistor(scope.row)"
+            >
               编辑
             </el-button>
             <el-button
               size="small"
+              type="primary"
+              plain
               @click="handleFloor(scope.$index, scope.row)"
             >
               楼层管理
@@ -168,6 +195,7 @@ const closeDialog = () => {
     v-if="addDistributorVisible"
     @closeDialog="closeDialog"
   />
+  <Floor ref="floorRef" v-if="floorVisible" @closeDialog="closeDialog" />
 </template>
 
 <style lang="scss" scoped>

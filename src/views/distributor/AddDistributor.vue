@@ -53,9 +53,16 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 
 <template>
   <el-dialog
+    :before-close="
+      () => {
+        emit('closeDialog');
+      }
+    "
     v-model="dialogFormVisible"
     title="新建经销商"
     width="700"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
     style="padding: 20px 24px 20px 20px"
   >
     <el-form

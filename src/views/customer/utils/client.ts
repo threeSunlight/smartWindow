@@ -4,6 +4,7 @@ export interface FloorRuleForm {
   newRoom: string;
   domains: DomainItem[];
   status?: number
+  newAreas: DomainItem[];
 }
 export interface DomainItem {
   key: number

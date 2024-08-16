@@ -1,12 +1,12 @@
 import { reactive } from "vue";
-import { AddRuleForm } from "./client";
+import { AddRuleForm, ChassAddRuleForm } from "./produ";
 import type { FormRules } from "element-plus";
-const addClientRules = reactive(<FormRules<AddRuleForm>>{
-  name: [
+const Rules = reactive(<FormRules<AddRuleForm>>{
+  id: [
     {
       validator: (rule, value, callback) => {
         if (value === "") {
-          callback(new Error("请输入客户名称"));
+          callback(new Error("请输入产品编号"));
         } else {
           callback();
         }
@@ -14,16 +14,16 @@ const addClientRules = reactive(<FormRules<AddRuleForm>>{
       trigger: "blur"
     }
   ],
-  city: [
+  number: [
     {
       validator: (rule, value, callback) => {
         if (value === "") {
-          callback(new Error("请选择所属城市"));
+          callback(new Error("请输入入库数量"));
         } else {
           callback();
         }
       },
-      trigger: "change"
+      trigger: "blur"
     }
   ],
   dealer: [
@@ -54,7 +54,31 @@ const addClientRules = reactive(<FormRules<AddRuleForm>>{
     {
       validator: (rule, value, callback) => {
         if (value === "") {
-          callback(new Error("请选择总开关机箱"));
+          callback(new Error("请选择所属机箱"));
+        } else {
+          callback();
+        }
+      },
+      trigger: "change"
+    }
+  ],
+  power: [
+    {
+      validator: (rule, value, callback) => {
+        if (value === "") {
+          callback(new Error("请选择权限分配"));
+        } else {
+          callback();
+        }
+      },
+      trigger: "change"
+    }
+  ],
+  availableTime: [
+    {
+      validator: (rule, value, callback) => {
+        if (value === "") {
+          callback(new Error("请选择可用时间"));
         } else {
           callback();
         }
@@ -63,13 +87,25 @@ const addClientRules = reactive(<FormRules<AddRuleForm>>{
     }
   ]
 });
-const floorRules = reactive(<FormRules<FloorRuleForm>>{
+const ChoseRules = reactive(<FormRules<ChassAddRuleForm>>{
+  id: [
+    {
+      validator: (rule, value, callback) => {
+        if (value === "") {
+          callback(new Error("请输入产品编号"));
+        } else {
+          callback();
+        }
+      },
+      trigger: "blur"
+    }
+  ],
 
-  newArea: [
+  dealer: [
     {
       validator: (rule, value, callback) => {
         if (value === "") {
-          callback(new Error("请选择新建区"));
+          callback(new Error("请选择所属经销商"));
         } else {
           callback();
         }
@@ -77,11 +113,11 @@ const floorRules = reactive(<FormRules<FloorRuleForm>>{
       trigger: "change"
     }
   ],
-  currentArea: [
+  project: [
     {
       validator: (rule, value, callback) => {
         if (value === "") {
-          callback(new Error("请选择当前区"));
+          callback(new Error("请选择所属项目"));
         } else {
           callback();
         }
@@ -89,11 +125,11 @@ const floorRules = reactive(<FormRules<FloorRuleForm>>{
       trigger: "change"
     }
   ],
-  newRoom: [
+  power: [
     {
       validator: (rule, value, callback) => {
         if (value === "") {
-          callback(new Error("请选择新建房间"));
+          callback(new Error("请选择权限分配"));
         } else {
           callback();
         }
@@ -101,6 +137,19 @@ const floorRules = reactive(<FormRules<FloorRuleForm>>{
       trigger: "change"
     }
   ],
+  angle: [
+    {
+      validator: (rule, value, callback) => {
+        if (value === "") {
+          callback(new Error("请输入默认开启角度"));
+        } else {
+          callback();
+        }
+      },
+      trigger: "blur"
+    }
+  ]
 });
 
-export { addClientRules, floorRules };
+
+export { Rules, ChoseRules };

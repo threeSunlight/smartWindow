@@ -93,3 +93,6 @@ dis:
   distributor: distributor management
 client:
   clienManagement: client management
+product:
+  productManagement: product management
+  chassisManagement: Chassis management

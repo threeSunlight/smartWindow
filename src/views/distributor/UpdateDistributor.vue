@@ -66,10 +66,17 @@ defineExpose({ init });
 
 <template>
   <el-dialog
+    :before-close="
+      () => {
+        emit('closeDialog');
+      }
+    "
     v-model="dialogFormVisible"
     title="信息编辑"
     width="700"
     style="padding: 20px 24px 20px 20px"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
   >
     <el-form
       ref="ruleFormRef"

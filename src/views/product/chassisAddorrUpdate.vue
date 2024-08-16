@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { ref, reactive, defineEmits, defineExpose } from "vue";
-import { AddRuleForm } from "./utils/client";
-import { addClientRules } from "./utils/rules";
+import { ChassAddRuleForm } from "./utils/produ";
+import { ChoseRules } from "./utils/rules";
 import type { ComponentSize, FormInstance } from "element-plus";
 import { addDistriibutor } from "@/api/distributor";
 import { ElMessage } from "element-plus";
+
 defineOptions({
-  name: ""
+  name: "ChassisAddorUpdate"
 });
 /**弹框是否显示 */
 const dialogFormVisible = ref(true);
@@ -14,19 +15,22 @@ const flag = ref(true);
 const emit = defineEmits(["closeDialog"]);
 const formSize = ref<ComponentSize>("default");
 const ruleFormRef = ref<FormInstance>();
-const ruleForm = reactive<AddRuleForm>({
-  name: "",
-  city: "",
+const ruleForm = reactive<ChassAddRuleForm>({
+  id: "",
   dealer: "",
   project: "",
-  switchCase: "",
-  startTime: "",
-  productNum: "",
-  status: 1
+  power: "",
+  status: 1,
+  chasStatus: 1,
+  angle: 1
 });
 
 const init = (info: any) => {
-  flag.value = info;
+  if (flag) {
+    flag.value = info;
+  } else {
+    flag.value = false;
+  }
 };
 
 const submitForm = async (formEl: FormInstance | undefined) => {
@@ -59,7 +63,7 @@ defineExpose({ init });
 <template>
   <el-dialog
     v-model="dialogFormVisible"
-    :title="flag ? '新建经销商' : '修改经销商'"
+    :title="flag ? '产品入库' : '产品分配'"
     width="700"
     style="padding: 20px 24px 20px 20px"
     :before-close="
@@ -73,20 +77,14 @@ defineExpose({ init });
     <el-form
       ref="ruleFormRef"
       :model="ruleForm"
-      :rules="addClientRules"
+      :rules="ChoseRules"
       label-width="auto"
       class="demo-ruleForm"
       :size="formSize"
       status-icon
     >
-      <el-form-item label="客户名称" prop="name" required>
-        <el-input v-model="ruleForm.name" placeholder="请输入经销商名称" />
-      </el-form-item>
-      <el-form-item label="所属城市" prop="city" required>
-        <el-select v-model="ruleForm.city" placeholder="请选择所属城市">
-          <el-option label="Zone one" value="shanghai" />
-          <el-option label="Zone two" value="beijing" />
-        </el-select>
+      <el-form-item label="机箱编号" prop="id" v-show="!flag" required>
+        <el-input v-model="ruleForm.id" placeholder="请输入产品编号" disabled />
       </el-form-item>
       <el-form-item label="所属经销商" prop="dealer" required>
         <el-select v-model="ruleForm.dealer" placeholder="请选择所属经销商">
@@ -100,28 +98,29 @@ defineExpose({ init });
           <el-option label="Zone two" value="beijing" />
         </el-select>
       </el-form-item>
-      <el-form-item label="总开关机箱" prop="switchCase" required>
-        <el-select v-model="ruleForm.switchCase" placeholder="请选择总开关机箱">
+      <el-form-item label="权限分配" prop="power" required>
+        <el-select v-model="ruleForm.power" placeholder="请选择权限分配">
           <el-option label="Zone one" value="shanghai" />
           <el-option label="Zone two" value="beijing" />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="startTime">
-        <el-date-picker
-          v-model="ruleForm.startTime"
-          type="date"
-          aria-label="请选择创建时间"
-          placeholder="请选择创建时间"
-          style="width: 100%"
-        />
+      <el-form-item label="默认开启角度" prop="angle" required>
+        <el-input-number v-model="ruleForm.angle" />
       </el-form-item>
-      <el-form-item label="产品数量" prop="productNum">
-        <el-input v-model="ruleForm.productNum" placeholder="请输入产品数量" />
-      </el-form-item>
-      <el-form-item label="客户状态" prop="status">
+      <el-form-item label="开窗角度权限" prop="status">
         <el-radio-group v-model="ruleForm.status">
           <el-radio :value="0"
-            ><span style="color: #1ebfa0 100%"> 启用</span></el-radio
+            ><span style="color: #1ebfa0 100%">启用</span></el-radio
+          >
+          <el-radio :value="1">
+            <span style="color: #ff4368 100%">停用</span></el-radio
+          >
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="机箱状态" prop="chasStatus">
+        <el-radio-group v-model="ruleForm.chasStatus">
+          <el-radio :value="0"
+            ><span style="color: #1ebfa0 100%">启用</span></el-radio
           >
           <el-radio :value="1">
             <span style="color: #ff4368 100%">停用</span></el-radio

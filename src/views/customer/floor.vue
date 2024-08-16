@@ -19,7 +19,15 @@ const ruleForm = reactive<FloorRuleForm>({
   newArea: "",
   currentArea: "",
   newRoom: "",
+  /**楼层 */
   domains: [
+    {
+      key: 1,
+      value: ""
+    }
+  ],
+  /**新建区 */
+  newAreas: [
     {
       key: 1,
       value: ""
@@ -47,6 +55,11 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
+      console.log("-----------");
+      console.log(fields);
+      console.log(valid);
+      console.log(ruleForm);
+      console.log("-----------");
       addDistriibutor(fields)
         .then(res => {
           ElMessage({
@@ -74,38 +87,36 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     title="楼层管理"
     width="700"
     style="padding: 20px 24px 20px 20px"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
+    :before-close="
+      () => {
+        emit('closeDialog');
+      }
+    "
   >
     <el-form
-      ref="formRef"
-      style="max-width: 600px"
+      ref="ruleFormRef"
       :model="ruleForm"
       label-width="auto"
       class="demo-dynamic"
       :rules="floorRules"
     >
       <el-form-item label="新建区" prop="newArea" required>
-        <el-select v-model="ruleForm.newArea" placeholder="请选择新建区">
+        <el-select
+          v-model="ruleForm.newArea"
+          placeholder="请选择新建区"
+          style="width: 90%; margin-right: 20px"
+        >
           <el-option label="Zone one" value="shanghai" />
           <el-option label="Zone two" value="beijing" />
         </el-select>
-      </el-form-item>
-      <el-form-item label="当前区" prop="currentArea" required>
-        <el-select v-model="ruleForm.currentArea" placeholder="请选择当前区">
-          <el-option label="Zone one" value="shanghai" />
-          <el-option label="Zone two" value="beijing" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="新建房间" prop="newRoom" required>
-        <el-select v-model="ruleForm.newRoom" placeholder="请选择新建房间">
-          <el-option label="Zone one" value="shanghai" />
-          <el-option label="Zone two" value="beijing" />
-        </el-select>
-        <el-button @click="addDomain" :icon="Plus" circle />
+        <el-button @click="addDomain" :icon="Plus" type="primary" circle />
       </el-form-item>
       <el-form-item
-        v-for="(domain, index) in ruleForm.domains"
+        v-for="(domain, index) in ruleForm.newAreas"
         :key="domain.key"
-        label=""
+        label=" "
         :prop="'domains.' + index + '.value'"
         :rules="{
           required: true,
@@ -114,9 +125,54 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         }"
         required
       >
-        <el-input v-model="domain.value" />
+        <el-input
+          v-model="domain.value"
+          style="width: 90%; margin-right: 20px"
+        />
         <el-button
-          type="primary"
+          type="danger"
+          plain
+          :icon="Minus"
+          circle
+          @click.prevent="removeDomain(domain)"
+        />
+      </el-form-item>
+      <el-form-item label="当前区" prop="currentArea" required>
+        <el-select v-model="ruleForm.currentArea" placeholder="请选择当前区">
+          <el-option label="Zone one" value="shanghai" />
+          <el-option label="Zone two" value="beijing" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="新建房间" prop="newRoom" required>
+        <el-select
+          v-model="ruleForm.newRoom"
+          placeholder="请选择新建房间"
+          style="width: 90%; margin-right: 20px"
+        >
+          <el-option label="Zone one" value="shanghai" />
+          <el-option label="Zone two" value="beijing" />
+        </el-select>
+        <el-button @click="addDomain" :icon="Plus" type="primary" circle />
+      </el-form-item>
+      <el-form-item
+        v-for="(domain, index) in ruleForm.domains"
+        :key="domain.key"
+        label=" "
+        :prop="'domains.' + index + '.value'"
+        :rules="{
+          required: true,
+          message: '楼梯间不能为空',
+          trigger: 'blur'
+        }"
+        required
+      >
+        <el-input
+          v-model="domain.value"
+          style="width: 90%; margin-right: 20px"
+        />
+        <el-button
+          type="danger"
+          plain
           :icon="Minus"
           circle
           @click.prevent="removeDomain(domain)"
@@ -135,7 +191,14 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button
+          @click="
+            () => {
+              emit('closeDialog');
+            }
+          "
+          >取消</el-button
+        >
         <el-button type="primary" @click="submitForm(ruleFormRef)">
           确认
         </el-button>

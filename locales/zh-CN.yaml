@@ -97,3 +97,6 @@ dis:
   distributor: 经销商管理
 client:
   clienManagement: 客户管理
+product:
+  productManagement: 产品管理
+  chassisManagement: 机箱管理
